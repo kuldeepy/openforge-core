@@ -1,0 +1,302 @@
+{
+  "id": "project.conveyor-demo",
+  "metadata": {
+    "name": "Conveyor Automation Demo",
+    "description": "Simulation-first conveyor control workflow with start, stop, emergency stop, jam detection, motor output, alarm, and restart timer.",
+    "version": "0.1.0",
+    "tags": ["demo", "conveyor", "simulation"]
+  },
+  "workflows": [
+    {
+      "id": "workflow.conveyor-control",
+      "metadata": {
+        "name": "Conveyor Control",
+        "description": "Controls a conveyor motor from operator inputs and safety sensors."
+      },
+      "nodes": [
+        {
+          "id": "node.start-button",
+          "templateId": "template.digital-input",
+          "metadata": { "name": "Start Button" },
+          "position": { "x": 0, "y": 0 },
+          "ports": [{ "id": "out", "name": "Output", "direction": "output", "signalType": "digital" }]
+        },
+        {
+          "id": "node.stop-button",
+          "templateId": "template.digital-input",
+          "metadata": { "name": "Stop Button" },
+          "position": { "x": 0, "y": 140 },
+          "ports": [{ "id": "out", "name": "Output", "direction": "output", "signalType": "digital" }]
+        },
+        {
+          "id": "node.emergency-stop",
+          "templateId": "template.emergency-stop",
+          "metadata": { "name": "Emergency Stop" },
+          "position": { "x": 0, "y": 280 },
+          "ports": [{ "id": "active", "name": "Active", "direction": "output", "signalType": "digital" }]
+        },
+        {
+          "id": "node.jam-sensor",
+          "templateId": "template.digital-input",
+          "metadata": { "name": "Jam Sensor" },
+          "position": { "x": 0, "y": 420 },
+          "ports": [{ "id": "out", "name": "Output", "direction": "output", "signalType": "digital" }]
+        },
+        {
+          "id": "node.restart-timer",
+          "templateId": "template.timer",
+          "metadata": { "name": "Restart Timer" },
+          "position": { "x": 320, "y": 420 },
+          "parameters": { "durationMs": 3000 },
+          "ports": [
+            { "id": "start", "name": "Start", "direction": "input", "signalType": "digital" },
+            { "id": "done", "name": "Done", "direction": "output", "signalType": "digital" }
+          ]
+        },
+        {
+          "id": "node.conveyor",
+          "templateId": "template.conveyor",
+          "metadata": { "name": "Conveyor Motor Control" },
+          "position": { "x": 640, "y": 120 },
+          "ports": [
+            { "id": "start", "name": "Start", "direction": "input", "signalType": "digital" },
+            { "id": "stop", "name": "Stop", "direction": "input", "signalType": "digital" },
+            { "id": "running", "name": "Running", "direction": "output", "signalType": "digital" }
+          ]
+        },
+        {
+          "id": "node.motor-output",
+          "templateId": "template.digital-output",
+          "metadata": { "name": "Motor Output" },
+          "position": { "x": 960, "y": 120 },
+          "ports": [{ "id": "in", "name": "Input", "direction": "input", "signalType": "digital", "required": true }]
+        },
+        {
+          "id": "node.alarm",
+          "templateId": "template.alarm",
+          "metadata": { "name": "Jam / E-Stop Alarm" },
+          "position": { "x": 640, "y": 360 },
+          "ports": [{ "id": "trigger", "name": "Trigger", "direction": "input", "signalType": "digital" }]
+        }
+      ],
+      "edges": [
+        {
+          "id": "edge.start-to-conveyor",
+          "sourceNodeId": "node.start-button",
+          "sourcePortId": "out",
+          "targetNodeId": "node.conveyor",
+          "targetPortId": "start",
+          "signalType": "digital"
+        },
+        {
+          "id": "edge.stop-to-conveyor",
+          "sourceNodeId": "node.stop-button",
+          "sourcePortId": "out",
+          "targetNodeId": "node.conveyor",
+          "targetPortId": "stop",
+          "signalType": "digital"
+        },
+        {
+          "id": "edge-estop-to-conveyor",
+          "sourceNodeId": "node.emergency-stop",
+          "sourcePortId": "active",
+          "targetNodeId": "node.conveyor",
+          "targetPortId": "stop",
+          "signalType": "digital"
+        },
+        {
+          "id": "edge-jam-to-alarm",
+          "sourceNodeId": "node.jam-sensor",
+          "sourcePortId": "out",
+          "targetNodeId": "node.alarm",
+          "targetPortId": "trigger",
+          "signalType": "digital"
+        },
+        {
+          "id": "edge-estop-to-alarm",
+          "sourceNodeId": "node.emergency-stop",
+          "sourcePortId": "active",
+          "targetNodeId": "node.alarm",
+          "targetPortId": "trigger",
+          "signalType": "digital"
+        },
+        {
+          "id": "edge-jam-to-timer",
+          "sourceNodeId": "node.jam-sensor",
+          "sourcePortId": "out",
+          "targetNodeId": "node.restart-timer",
+          "targetPortId": "start",
+          "signalType": "digital"
+        },
+        {
+          "id": "edge-timer-to-conveyor",
+          "sourceNodeId": "node.restart-timer",
+          "sourcePortId": "done",
+          "targetNodeId": "node.conveyor",
+          "targetPortId": "start",
+          "signalType": "digital"
+        },
+        {
+          "id": "edge-conveyor-to-output",
+          "sourceNodeId": "node.conveyor",
+          "sourcePortId": "running",
+          "targetNodeId": "node.motor-output",
+          "targetPortId": "in",
+          "signalType": "digital"
+        }
+      ],
+      "groups": [
+        {
+          "id": "group.operator-inputs",
+          "metadata": { "name": "Operator Inputs" },
+          "nodeIds": ["node.start-button", "node.stop-button", "node.emergency-stop"]
+        },
+        {
+          "id": "group.conveyor-control",
+          "metadata": { "name": "Conveyor Control" },
+          "nodeIds": ["node.conveyor", "node.motor-output", "node.restart-timer"]
+        }
+      ]
+    }
+  ],
+  "connectors": [
+    {
+      "id": "connector.rest.local",
+      "metadata": {
+        "name": "Local REST API",
+        "description": "HTTP interface for project and runtime inspection."
+      },
+      "protocol": "rest",
+      "enabled": true,
+      "config": {
+        "baseUrl": "http://localhost:8000"
+      }
+    },
+    {
+      "id": "connector.websocket.local",
+      "metadata": {
+        "name": "Runtime WebSocket Stream",
+        "description": "Streams runtime events to the browser dashboard."
+      },
+      "protocol": "websocket",
+      "enabled": true,
+      "config": {
+        "url": "ws://localhost:8000/runtime/events"
+      }
+    },
+    {
+      "id": "connector.mqtt.local",
+      "metadata": {
+        "name": "Local MQTT Broker",
+        "description": "Publishes simulated signals to MQTT topics."
+      },
+      "protocol": "mqtt",
+      "enabled": false,
+      "config": {
+        "brokerUrl": "mqtt://localhost:1883",
+        "topicPrefix": "openforge/conveyor-demo"
+      }
+    }
+  ],
+  "simulationScenarios": [
+    {
+      "id": "scenario.nominal-start-stop",
+      "metadata": {
+        "name": "Nominal Start Stop",
+        "description": "Operator starts the conveyor, then stops it."
+      },
+      "workflowId": "workflow.conveyor-control",
+      "maxTicks": 10,
+      "scheduledSignals": [
+        {
+          "tick": 1,
+          "signal": {
+            "id": "sig.start-pressed",
+            "type": "digital",
+            "value": true,
+            "timestamp": "2026-01-01T00:00:00.000Z",
+            "sourceNodeId": "node.start-button",
+            "sourcePortId": "out"
+          }
+        },
+        {
+          "tick": 6,
+          "signal": {
+            "id": "sig.stop-pressed",
+            "type": "digital",
+            "value": true,
+            "timestamp": "2026-01-01T00:00:06.000Z",
+            "sourceNodeId": "node.stop-button",
+            "sourcePortId": "out"
+          }
+        }
+      ]
+    },
+    {
+      "id": "scenario.jam-recovery",
+      "metadata": {
+        "name": "Jam Recovery",
+        "description": "Jam sensor raises an alarm and starts restart timing."
+      },
+      "workflowId": "workflow.conveyor-control",
+      "maxTicks": 12,
+      "scheduledSignals": [
+        {
+          "tick": 1,
+          "signal": {
+            "id": "sig.start-pressed-jam",
+            "type": "digital",
+            "value": true,
+            "timestamp": "2026-01-01T00:00:00.000Z",
+            "sourceNodeId": "node.start-button",
+            "sourcePortId": "out"
+          }
+        },
+        {
+          "tick": 4,
+          "signal": {
+            "id": "sig.jam-detected",
+            "type": "digital",
+            "value": true,
+            "timestamp": "2026-01-01T00:00:04.000Z",
+            "sourceNodeId": "node.jam-sensor",
+            "sourcePortId": "out"
+          }
+        }
+      ]
+    },
+    {
+      "id": "scenario.emergency-stop",
+      "metadata": {
+        "name": "Emergency Stop",
+        "description": "Emergency stop forces the conveyor stop path and alarm trigger."
+      },
+      "workflowId": "workflow.conveyor-control",
+      "maxTicks": 8,
+      "scheduledSignals": [
+        {
+          "tick": 1,
+          "signal": {
+            "id": "sig.start-before-estop",
+            "type": "digital",
+            "value": true,
+            "timestamp": "2026-01-01T00:00:00.000Z",
+            "sourceNodeId": "node.start-button",
+            "sourcePortId": "out"
+          }
+        },
+        {
+          "tick": 3,
+          "signal": {
+            "id": "sig.estop-active",
+            "type": "digital",
+            "value": true,
+            "timestamp": "2026-01-01T00:00:03.000Z",
+            "sourceNodeId": "node.emergency-stop",
+            "sourcePortId": "active"
+          }
+        }
+      ]
+    }
+  ]
+}

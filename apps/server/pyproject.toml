@@ -1,0 +1,12 @@
+[project]
+name = "openforge-server"
+version = "0.1.0"
+description = "FastAPI service scaffold for OpenForge Core."
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi>=0.115.0",
+  "uvicorn[standard]>=0.32.0"
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

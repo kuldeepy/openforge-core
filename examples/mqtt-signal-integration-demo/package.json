@@ -1,0 +1,16 @@
+{
+  "name": "@openforge/mqtt-signal-integration-demo",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node run-mqtt-demo.mjs --dry-run",
+    "lint": "node run-mqtt-demo.mjs --dry-run",
+    "test": "node run-mqtt-demo.mjs --dry-run",
+    "typecheck": "node run-mqtt-demo.mjs --dry-run",
+    "simulate": "node run-mqtt-demo.mjs --dry-run"
+  },
+  "dependencies": {
+    "@openforge/connectors": "workspace:*"
+  }
+}

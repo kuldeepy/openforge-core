@@ -1,0 +1,12 @@
+{
+  "name": "@openforge/server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "echo \"server scaffold: implement FastAPI or Node backend after schema stabilization\"",
+    "lint": "echo \"server scaffold\"",
+    "test": "echo \"server scaffold\"",
+    "typecheck": "echo \"server scaffold\""
+  }
+}

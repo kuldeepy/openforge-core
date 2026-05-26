@@ -1,0 +1,12 @@
+scenario: scenario.nominal-start-stop
+tickMs: 1000
+recordTrace: true
+recordReplay: true
+initialState:
+  motorRunning: false
+  alarmActive: false
+expectedBehavior:
+  - tick: 1
+    description: Start button requests conveyor run.
+  - tick: 6
+    description: Stop button requests conveyor stop.

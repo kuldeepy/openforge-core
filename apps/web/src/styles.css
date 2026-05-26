@@ -1,0 +1,162 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color: #172026;
+  background: #f6f7f9;
+  font-family: Inter, Segoe UI, Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+}
+
+button,
+label {
+  align-items: center;
+  border: 1px solid #d8dde3;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  gap: 6px;
+  padding: 8px 10px;
+}
+
+label input {
+  display: none;
+}
+
+.of-shell {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: 100vh;
+}
+
+.of-sidebar {
+  background: #ffffff;
+  border-right: 1px solid #d8dde3;
+  padding: 18px;
+}
+
+.of-sidebar h1 {
+  font-size: 22px;
+  margin: 0 0 8px;
+}
+
+.of-sidebar p {
+  color: #5f6b76;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.of-template-list {
+  display: grid;
+  gap: 8px;
+}
+
+.of-template-list button {
+  align-items: flex-start;
+  background: #f9fafb;
+  flex-direction: column;
+  text-align: left;
+}
+
+.of-template-list span,
+.of-toolbar span {
+  color: #667085;
+  font-size: 12px;
+}
+
+.of-main {
+  min-width: 0;
+}
+
+.of-toolbar {
+  align-items: center;
+  background: #ffffff;
+  border-bottom: 1px solid #d8dde3;
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 16px;
+}
+
+.of-toolbar > div:first-child {
+  display: grid;
+  gap: 2px;
+}
+
+.of-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.of-layout {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  height: calc(100vh - 58px);
+}
+
+.of-canvas {
+  background: #eef2f5;
+}
+
+.of-inspector {
+  background: #fbfcfd;
+  border-left: 1px solid #d8dde3;
+  overflow: auto;
+  padding: 14px;
+}
+
+.of-inspector section {
+  background: #ffffff;
+  border: 1px solid #d8dde3;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  padding: 12px;
+}
+
+.of-inspector h2 {
+  font-size: 14px;
+  margin: 0 0 8px;
+}
+
+.of-inspector ul,
+.of-inspector ol {
+  margin: 0;
+  padding-left: 20px;
+}
+
+pre {
+  background: #111827;
+  border-radius: 8px;
+  color: #e5e7eb;
+  font-size: 12px;
+  max-height: 280px;
+  overflow: auto;
+  padding: 12px;
+}
+
+.of-node {
+  display: grid;
+  gap: 5px;
+}
+
+.of-node span {
+  color: #667085;
+  font-size: 12px;
+}
+
+.of-ports {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.of-ports code {
+  background: #e6f7f5;
+  border-radius: 999px;
+  color: #0f766e;
+  font-size: 10px;
+  padding: 3px 6px;
+}
