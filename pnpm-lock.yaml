@@ -16,6 +16,15 @@ importers:
 
   apps/web:
     dependencies:
+      '@openforge/runtime':
+        specifier: workspace:*
+        version: link:../../packages/runtime
+      '@openforge/schema':
+        specifier: workspace:*
+        version: link:../../packages/schema
+      '@openforge/templates':
+        specifier: workspace:*
+        version: link:../../packages/templates
       '@types/react':
         specifier: ^19.2.15
         version: 19.2.15

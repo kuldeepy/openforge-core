@@ -159,6 +159,45 @@
       ]
     }
   ],
+  "connectionProfiles": [
+    {
+      "id": "connector.rest.local",
+      "metadata": {
+        "name": "Local REST API",
+        "description": "HTTP interface for project and runtime inspection."
+      },
+      "protocol": "rest",
+      "enabled": true,
+      "config": {
+        "baseUrl": "http://localhost:8000"
+      }
+    },
+    {
+      "id": "connector.websocket.local",
+      "metadata": {
+        "name": "Runtime WebSocket Stream",
+        "description": "Streams runtime events to the browser dashboard."
+      },
+      "protocol": "websocket",
+      "enabled": true,
+      "config": {
+        "url": "ws://localhost:8000/runtime/events"
+      }
+    },
+    {
+      "id": "connector.mqtt.local",
+      "metadata": {
+        "name": "Local MQTT Broker",
+        "description": "Publishes simulated signals to MQTT topics."
+      },
+      "protocol": "mqtt",
+      "enabled": false,
+      "config": {
+        "brokerUrl": "mqtt://localhost:1883",
+        "topicPrefix": "openforge/conveyor-demo"
+      }
+    }
+  ],
   "connectors": [
     {
       "id": "connector.rest.local",
